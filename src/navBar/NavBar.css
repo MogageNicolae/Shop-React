@@ -1,0 +1,101 @@
+.shop-name {
+    position: absolute;
+    margin: 15px 0 0 0;
+    left: 45vw;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: clamp(1rem, 1.5vw, 2rem);
+}
+
+
+.nav-bar {
+    background-color: black;
+    color: #f0f0f0;
+}
+
+
+.nav-bar-menu {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    /*font-size: clamp(1rem, 1vw, 2rem);*/
+    margin: 0 35px;
+    padding: 2vh 0;
+}
+
+.nav-bar-menu ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+}
+
+.nav-bar-menu li {
+    margin-right: 15px;
+}
+
+.nav-bar-menu li:last-child {
+    margin-right: 0;
+}
+
+.nav-bar-menu li, .nav-bar-menu a {
+    color: #999;
+}
+
+.nav-bar-menu a:hover {
+    color: #f0f0f0;
+}
+
+.nav-bar-menu-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.nav-bar-menu-left a:hover {
+    border-bottom: 3px solid #f0f0f0;
+    padding-bottom: 4px;
+}
+
+.nav-bar-menu-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    width: 10vw;
+    min-width: 100px;
+    position: relative;
+}
+
+.nav-bar-menu-right ul li:hover {
+    color: #f0f0f0;
+    cursor: pointer;
+}
+
+.nav-bar-menu-right ul li .quantity {
+    position: absolute;
+    background-color: #f0f0f0;
+    color: black;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.8rem;
+}
+
+.nav-bar-menu-right ul li .quantity-cart {
+    top: -8px;
+    right: -8px;
+}
+
+.nav-bar-menu-right ul li .quantity-empty {
+    display: none;
+}
+
+.nav-bar-menu .search-button {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

@@ -1,25 +1,37 @@
-import logo from './logo.svg';
 import './App.css';
+import NavBar from "./navBar/NavBar";
+import Main from "./main/Main";
+import {useState, useEffect} from "react";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const products = useFetch();
+    return (
+        <div className="app">
+            <NavBar/>
+            <Main gridProducts={products}/>
+            <footer></footer>
+        </div>
+    );
+}
+
+function useFetch(url = "https://dummyjson.com/products") {
+    const [data, setData] = useState([]);
+
+    useEffect(() => {
+        async function init() {
+            try {
+                const response = await fetch(url);
+                const json = await response.json();
+                setData(json.products);
+            } catch (e) {
+                setData([]);
+            }
+        }
+
+        init();
+    }, [url]);
+
+    return data;
 }
 
 export default App;
