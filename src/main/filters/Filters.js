@@ -1,13 +1,13 @@
 import FilterCategoryTab from "./filterCategoryTab/FilterCategoryTab";
 import FilterCategoryItem from "./filterCategoryItem/FilterCategoryItem";
 
-export default function Filters() {
+export default function Filters({addedFilters, setAddedFilters}) {
     return (
         <section className="filters">
             <FilterCategoryTab value="Categories"/>
             <div className="filters-category">
-                <FilterCategoryItem value='Smartphones' />
-                <FilterCategoryItem value='Laptops' />
+                <FilterCategoryItem value='Smartphones' addedFilters={addedFilters} setAddedFilters={setAddedFilters}/>
+                <FilterCategoryItem value='Laptops' addedFilters={addedFilters} setAddedFilters={setAddedFilters}/>
                 <FilterCategoryItem value='Fragrances' />
                 <FilterCategoryItem value='Skincare' />
                 <FilterCategoryItem value='Groceries' />
