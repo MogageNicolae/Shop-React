@@ -1,11 +1,15 @@
 .shop-name {
     position: absolute;
     margin: 15px 0 0 0;
-    left: 45vw;
+    left: calc(50% - 135px);
     font-family: Arial, Helvetica, sans-serif;
-    font-size: clamp(1rem, 1.5vw, 2rem);
+    font-size: 2rem;
 }
 
+.link-react {
+    text-decoration: none;
+    color: #f0f0f0;
+}
 
 .nav-bar {
     background-color: black;

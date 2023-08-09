@@ -1,14 +1,28 @@
 import './App.css';
-import NavBar from "./navBar/NavBar";
-import Main from "./main/Main";
+import {BrowserRouter, Route, Routes} from "react-router-dom";
+import {AuthProvider, ProtectedRoute} from "./pages/Authentification";
+import MainPage from "./pages/MainPage";
+import LandingPage from "./pages/LandingPage";
+import ProductPage from "./pages/ProductPage";
+import LoginPage from "./pages/loginPage/LoginPage";
+import CartPage from "./pages/cartPage/CartPage";
+import AccountPage from "./pages/accountPage/AccountPage";
 
 function App() {
     return (
-        <div className="app">
-            <NavBar/>
-            <Main/>
-            <footer></footer>
-        </div>
+        <BrowserRouter>
+            <AuthProvider>
+                <Routes>
+                    <Route path="/" element={<LandingPage/>}/>
+                    <Route path="/products" element={<MainPage/>}/>
+                    <Route path="/products/:page" element={<MainPage/>}/>
+                    <Route path="/product-page/:productId" element={<ProductPage/>}/>
+                    <Route path="/login" element={<LoginPage/>}/>
+                    <Route path="/account" element={<ProtectedRoute><AccountPage/></ProtectedRoute>}/>
+                    <Route path="/cart" element={<ProtectedRoute><CartPage/></ProtectedRoute>}/>
+                </Routes>
+            </AuthProvider>
+        </BrowserRouter>
     );
 }
 

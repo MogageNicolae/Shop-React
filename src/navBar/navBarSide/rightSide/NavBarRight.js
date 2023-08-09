@@ -5,9 +5,9 @@ export default function NavBarRight() {
     return (
         <div className="nav-bar-menu-right">
             <ul>
-                <Control value='person' />
-                <Control value='favorite' />
-                <Control value='shopping_bag' />
+                <Control value='person' linkToValue='/account'/>
+                <Control value='favorite' linkToValue='/'/>
+                <Control value='shopping_bag' linkToValue='/cart' />
             </ul>
             <SearchBar />
         </div>

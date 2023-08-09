@@ -1,13 +1,13 @@
 export default function FilterCategoryItem({value, addedFilters, setAddedFilters}) {
     function handleApplySelectedFilter(filter) {
         filter.currentTarget.classList.toggle('filters-active');
-        if (addedFilters.includes(filter.currentTarget.children[0].innerHTML)) {
-            addedFilters.splice(addedFilters.indexOf(filter.currentTarget.children[0].innerHTML), 1);
+        const filters = [...addedFilters];
+        if (filters.includes(filter.currentTarget.children[0].innerHTML)) {
+            filters.splice(filters.indexOf(filter.currentTarget.children[0].innerHTML), 1);
         } else {
-            addedFilters.push(filter.currentTarget.children[0].innerHTML);
+            filters.push(filter.currentTarget.children[0].innerHTML);
         }
-        console.log(addedFilters);
-        setAddedFilters(addedFilters);
+        setAddedFilters(filters);
     }
 
     return (

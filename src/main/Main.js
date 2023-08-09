@@ -3,20 +3,20 @@ import Filters from "./filters/Filters";
 import ProductsInfo from "./products/productsInfo/ProductsInfo";
 import ProductsGrid from "./products/productsGrid/ProductsGrid";
 import {useEffect, useState} from "react";
+import {useParams} from "react-router-dom";
 
-export default function Main() {
+export default function Main({showNotification}) {
     if (localStorage.getItem('productsPerPage') === null) {
         localStorage.setItem('productsPerPage', '12');
     }
 
     const [addedFilters, setAddedFilters] = useState([]);
     const [productsPerPage, setProductsPerPage] = useState(localStorage.getItem('productsPerPage'));
-    const urlParams = new URLSearchParams(window.location.search);
-    const pageParam = parseInt(urlParams.get('page'));
+    let { page} = useParams();
+    const pageParam = parseInt(page);
     const isPage = (!isNaN(pageParam) && pageParam >= 1);
     const currentPage = isPage ? pageParam : 1;
-    // const numberOfProducts = useFetch(100000, 0, addedFilters).length;
-    const numberOfProducts = 100;
+    const numberOfProducts = useFetch(100000, 0, addedFilters).length;
     const products = useFetch(productsPerPage, currentPage, addedFilters);
 
     return (
@@ -25,13 +25,13 @@ export default function Main() {
             <section className="products">
                 <ProductsInfo setProductsPerPage={setProductsPerPage} numberOfProducts={numberOfProducts}/>
                 <ProductsGrid gridProducts={products} numberOfPages={Math.ceil(numberOfProducts / productsPerPage)}
-                              currentPage={currentPage}/>
+                              currentPage={currentPage} showNotification={showNotification}/>
             </section>
         </main>
     );
 }
 
-function useFetch(productsPerPage, currentPage, addedFilters) {
+export function useFetch(productsPerPage, currentPage, addedFilters) {
     const [data, setData] = useState([]);
 
     useEffect(() => {
@@ -47,28 +47,37 @@ function useFetch(productsPerPage, currentPage, addedFilters) {
         }
 
         async function getByCategories() {
+            let categoryProducts = [];
             let loadedProducts = [];
             try {
                 for (const filter of addedFilters) {
                     const urlToFetch = "https://dummyjson.com/products/category/" + filter;
                     const response = await fetch(urlToFetch);
                     const json = await response.json();
-                    loadedProducts.push(...json.products);
-                    console.log(loadedProducts);
+                    categoryProducts.push(...json.products);
                 }
             } catch (e) {
                 setData([]);
-                loadedProducts = [];
+                categoryProducts = [];
+            }
+            if (productsPerPage === 100000) {
+                setData(categoryProducts);
+                return;
+            }
+
+            for (let index = (currentPage - 1) * productsPerPage; index < currentPage * productsPerPage; index++) {
+                if (index >= categoryProducts.length) {
+                    break;
+                }
+                loadedProducts.push(categoryProducts[index]);
             }
             setData(loadedProducts);
         }
 
         if (addedFilters.length === 0) {
-            console.log("NU AICI");
             init();
         } else {
-            console.log("AICI");
-             getByCategories();
+            getByCategories();
         }
     }, [productsPerPage, currentPage, addedFilters]);
 
