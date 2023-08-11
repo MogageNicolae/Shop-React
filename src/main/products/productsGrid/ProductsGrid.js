@@ -36,7 +36,7 @@ function generatePaginationLinks(currentPage, numberOfPages) {
     const links = [];
 
     if (currentPage > 1) {
-        links.push(<Link  key="arrow-left" to={'/products/' + (currentPage - 1)}>
+        links.push(<Link key="arrow-left" to={'/products/' + (currentPage - 1)}>
             <span className="material-symbols-outlined arrow-page"> keyboard_arrow_left </span></Link>)
     }
 
@@ -78,8 +78,8 @@ function generatePaginationLinks(currentPage, numberOfPages) {
 
     if (currentPage
         < numberOfPages) {
-        links.push(<Link key="arrow-left" to={'/products/' + (currentPage + 1)}>
-            <span  className="material-symbols-outlined arrow-page"> keyboard_arrow_right </span></Link>)
+        links.push(<Link key="arrow-right" to={'/products/' + (currentPage + 1)}>
+            <span className="material-symbols-outlined arrow-page"> keyboard_arrow_right </span></Link>)
     }
 
     return links;

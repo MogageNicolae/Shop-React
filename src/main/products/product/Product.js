@@ -1,12 +1,13 @@
 import {Link} from "react-router-dom";
-import {addProductToCartAPI, getProductAfterId} from "../../../API";
+import {getProductAfterId, useAddProductToCartMutation} from "../../../API";
 
 export default function Product({product, showNotification}) {
+    const [addProductToCart] = useAddProductToCartMutation();
 
     async function handleAddProductToCart(event) {
         event.target.textContent = "Adding...";
         event.target.disabled = true;
-        await updateCart(event.target.dataset.id);
+        await updateCart(event.target.dataset.id, addProductToCart);
         event.target.textContent = "Add to cart";
         event.target.disabled = false;
         showNotification();
@@ -32,10 +33,11 @@ export default function Product({product, showNotification}) {
         </div>);
 }
 
-async function updateCart(productId) {
+async function updateCart(productId, addProductToCart) {
     try {
         let product = await getProductAfterId(productId);
-        await addProductToCartAPI(product);
+        product.quantity = 1;
+        await addProductToCart(product).unwrap();
     } catch (e) {
         console.log(e);
     }

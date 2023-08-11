@@ -3,7 +3,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin: 10vh 0;
+    padding: 10vh 0;
 }
 
 .checkout-header {
@@ -70,7 +70,7 @@
 
 .checkout-item-info-description {
     max-width: 320px;
-    height: 66px;
+    height: 58px;
     text-overflow: ellipsis;
     overflow-y: hidden;
     white-space: break-spaces;
@@ -107,6 +107,12 @@
     cursor: pointer;
 }
 
+.disabled:hover {
+    background-color: white!important;
+    color: black!important;
+    cursor: default!important;
+}
+
 .checkout-item-info-left-wrapper {
     width: 50%;
     height: 54px;
@@ -120,9 +126,9 @@
     min-width: 90px;
 }
 
-.checkout-item-info-right-wrapper .material-symbols-outlined {
-    color: #aaa;
-}
+/*.checkout-item-info-right-wrapper .material-symbols-outlined {*/
+/*    color: black;*/
+/*}*/
 
 .checkout-item-info-right-wrapper .material-symbols-outlined:hover {
     color: red;
@@ -198,4 +204,20 @@
     background-color: #f0f0f0;
     color: #000;
     cursor: pointer;
+}
+
+.loader-container {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(248, 222, 191, 0.75);
+    z-index: 1;
+    margin: -10vh 0;
+}
+
+.small-spinner {
+    width: 15px;
+    height: 15px;
 }

@@ -1,5 +1,4 @@
-const cartId = '64c3a47146628';
-const token = localStorage.getItem('token');
+import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
 
 export async function getProductAfterId(id) {
     return await fetch('https://dummyjson.com/products/' + id)
@@ -7,51 +6,83 @@ export async function getProductAfterId(id) {
 }
 
 
-export async function getCartAPI() {
-    return await fetch(`https://vlad-matei.thrive-dev.bitstoneint.com/wp-json/internship-api/v1/cart/${cartId}`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'Internship-Auth': `${token}`
-        },
-    }).then(res => res.json());
-}
+export const productsApi = createApi({
+    reducerPath: 'productsApi',
+    baseQuery: fetchBaseQuery({baseUrl: 'https://dummyjson.com/'}),
+    endpoints: (builder) => ({
+        getProducts: builder.query({
+            query: ([productsPerPage, currentPage]) => `products?limit=${productsPerPage}&skip=${(currentPage - 1) * productsPerPage}`,
+        }),
+        getProduct: builder.query({
+            query: (id) => `products/${id}`,
+        }),
+    }),
+});
 
-export async function addProductToCartAPI(product) {
-    return await fetch(`https://vlad-matei.thrive-dev.bitstoneint.com/wp-json/internship-api/v1/cart/${cartId}`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Internship-Auth': `${token}`
-        },
-        body: JSON.stringify({
-            products: [product]
-        })
-    })
-}
+export const {
+    useGetProductsQuery,
+    useGetProduct,
+} = productsApi;
 
-export async function removeProductFromCartAPI(productId) {
-    return await fetch(`https://vlad-matei.thrive-dev.bitstoneint.com/wp-json/internship-api/v1/cart/${cartId}?products[]=${productId}`, {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json',
-            'Internship-Auth': `${token}`
-        },
-    }).then(res => res.json())
-}
+export const cartApi = createApi({
+    reducerPath: 'cartApi',
+    baseQuery: fetchBaseQuery({baseUrl: 'https://vlad-matei.thrive-dev.bitstoneint.com/wp-json/internship-api/v1/cart/'}),
+    endpoints: (builder) => ({
+        getCart: builder.query({
+            query: (token = localStorage.getItem('token'), cart = '64c3a47146628') => ({
+                url: `${cart}`,
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Internship-Auth': `${token}`
+                },
+            }),
+        }),
+        addProductToCart: builder.mutation({
+            query: (product, token = localStorage.getItem('token'), cart = '64c3a47146628') => ({
+                url: `${cart}`,
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Internship-Auth': `${token}`
+                },
+                body: JSON.stringify({
+                    products: [product]
+                }),
+            }),
+        }),
+        updateProductFromCart: builder.mutation({
+            query: ([productId, quantity], token = localStorage.getItem('token'), cart = '64c3a47146628') => ({
+                url: `${cart}`,
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Internship-Auth': `${token}`
+                },
+                body: JSON.stringify({
+                    products: [{
+                        id: productId,
+                        quantity: quantity,
+                    }]
+                }),
+            }),
+        }),
+        removeProductFromCart: builder.mutation({
+            query: (productId, token = localStorage.getItem('token'), cart = '64c3a47146628') => ({
+                url: `${cart}?products[]=${productId}`,
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Internship-Auth': `${token}`
+                },
+            }),
+        }),
+    }),
+});
 
-export async function updateProductQuantityAPI(productId, quantity) {
-    return await fetch(`https://vlad-matei.thrive-dev.bitstoneint.com/wp-json/internship-api/v1/cart/${cartId}`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json',
-            'Internship-Auth': `${token}`
-        },
-        body: JSON.stringify({
-            products: [{
-                id: productId,
-                quantity: quantity
-            }]
-        })
-    }).then(res => res.json())
-}
+export const {
+    useGetCartQuery,
+    useAddProductToCartMutation,
+    useUpdateProductFromCartMutation,
+    useRemoveProductFromCartMutation
+} = cartApi;

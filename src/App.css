@@ -26,3 +26,20 @@ footer {
     z-index: 9;
 }
 
+.spinner {
+    width: 64px;
+    height: 64px;
+    border: 7px solid;
+    border-color: #222 transparent #222 transparent;
+    border-radius: 50%;
+    animation: spin-anim 1.2s linear infinite;
+}
+
+@keyframes spin-anim {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}

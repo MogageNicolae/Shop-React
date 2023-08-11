@@ -3,33 +3,61 @@ import EmptyCart from "./EmptyCart";
 import './CartPage.css';
 import {useEffect, useState} from "react";
 import ProductsCart from "./ProductsCart";
-import {getCartAPI} from "../../API";
+import {useGetCartQuery} from "../../API";
 
 export default function CartPage() {
-    const [cart, setCart] = useState(null);
+    const [cartToShow, setCartToShow] = useState(null);
+    const {
+        data: cart,
+        isLoading,
+        isFetching,
+        isError,
+        error,
+    } = useGetCartQuery();
 
     useEffect(() => {
-        init().then((res) => {
-            setCart(res);
-        });
-    }, []);
+        if (cart) {
+            if (cart.totalQuantity === 0) {
+                setCartToShow(<EmptyCart/>);
+            } else {
+                setCartToShow(<ProductsCart cart={cart} setCartToShow={setCartToShow}/>);
+            }
+        }
+    }, [cart]);
 
-
-    return (<div className="app">
-        <NavBar/>
-        <main className="checkout-container">
-            {cart}
-        </main>
-        <footer></footer>
-    </div>);
-}
-
-async function init() {
-    let cart = await getCartAPI();
-
-    if (cart.totalQuantity === 0) {
-        return <EmptyCart/>;
+    if (isLoading || isFetching) {
+        return (
+            <div className="app">
+                <NavBar/>
+                <main className="checkout-container">
+                    <div className="loader-container">
+                        <div className="spinner"></div>
+                    </div>
+                </main>
+            </div>
+        );
     }
 
-    return <ProductsCart cart={cart}/>;
+    if (isError) {
+        console.log({error});
+        return (
+            <div className="app">
+                <NavBar/>
+                <main className="checkout-container">
+                    error.status: {error.status}
+                </main>
+                <footer></footer>
+            </div>
+        );
+    }
+
+    return (
+        <div className="app">
+            <NavBar/>
+            <main className="checkout-container">
+                {cartToShow}
+            </main>
+            <footer></footer>
+        </div>
+    );
 }

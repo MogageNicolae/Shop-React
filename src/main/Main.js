@@ -4,6 +4,7 @@ import ProductsInfo from "./products/productsInfo/ProductsInfo";
 import ProductsGrid from "./products/productsGrid/ProductsGrid";
 import {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
+import {productsApi, useGetProductsQuery} from "../API";
 
 export default function Main({showNotification}) {
     if (localStorage.getItem('productsPerPage') === null) {
@@ -12,20 +13,31 @@ export default function Main({showNotification}) {
 
     const [addedFilters, setAddedFilters] = useState([]);
     const [productsPerPage, setProductsPerPage] = useState(localStorage.getItem('productsPerPage'));
-    let { page} = useParams();
+    let {page} = useParams();
     const pageParam = parseInt(page);
     const isPage = (!isNaN(pageParam) && pageParam >= 1);
     const currentPage = isPage ? pageParam : 1;
-    const numberOfProducts = useFetch(100000, 0, addedFilters).length;
-    const products = useFetch(productsPerPage, currentPage, addedFilters);
+    const numberOfProducts = useFetch(100000, 1, addedFilters).length;
+    const {
+        data: products,
+        isLoading,
+        isFetching,
+        isError,
+        error,
+    } = useGetProductsQuery([productsPerPage, currentPage]);
 
     return (
         <main className="products-container">
             <Filters addedFilters={addedFilters} setAddedFilters={setAddedFilters}/>
             <section className="products">
                 <ProductsInfo setProductsPerPage={setProductsPerPage} numberOfProducts={numberOfProducts}/>
-                <ProductsGrid gridProducts={products} numberOfPages={Math.ceil(numberOfProducts / productsPerPage)}
-                              currentPage={currentPage} showNotification={showNotification}/>
+                {
+                    (isLoading || isFetching) ?
+                        <div className="spinner center"></div> :
+                        <ProductsGrid gridProducts={products.products}
+                                      numberOfPages={Math.ceil(numberOfProducts / productsPerPage)}
+                                      currentPage={currentPage} showNotification={showNotification}/>
+                }
             </section>
         </main>
     );
