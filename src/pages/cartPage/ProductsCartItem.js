@@ -1,5 +1,5 @@
 import {useDispatch, useSelector} from "react-redux";
-import {decrease, increase, setNewValue} from "./redux/quantityChangeSlice";
+import {decrease, increase, setNewValue} from "../../redux/quantityChangeSlice";
 import {useEffect, useState} from "react";
 import {
     useRemoveProductFromCartMutation,

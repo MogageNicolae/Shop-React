@@ -11,17 +11,19 @@ export const productsApi = createApi({
     baseQuery: fetchBaseQuery({baseUrl: 'https://dummyjson.com/'}),
     endpoints: (builder) => ({
         getProducts: builder.query({
-            query: ([productsPerPage, currentPage]) => `products?limit=${productsPerPage}&skip=${(currentPage - 1) * productsPerPage}`,
+            query: ([productsPerPage, currentPage, addedFilters]) => addedFilters.length === 0 ?
+                `products?limit=${productsPerPage}&skip=${(currentPage - 1) * productsPerPage}` :
+                `products/category/${addedFilters[0]}?limit=${productsPerPage}&skip=${(currentPage - 1) * productsPerPage}`,
         }),
         getProduct: builder.query({
-            query: (id) => `products/${id}`,
+            query: (id = 1) => `products/${id}`,
         }),
     }),
 });
 
 export const {
     useGetProductsQuery,
-    useGetProduct,
+    useGetProductQuery,
 } = productsApi;
 
 export const cartApi = createApi({

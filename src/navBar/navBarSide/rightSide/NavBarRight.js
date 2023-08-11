@@ -22,10 +22,6 @@ function useCartSize() {
     const [cartSize, setCartSize] = useState(0);
     const {
         data: cart,
-        isLoading,
-        isFetching,
-        isError,
-        error,
     } = useGetCartQuery();
 
     useEffect(() => {

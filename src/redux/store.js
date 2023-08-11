@@ -1,6 +1,6 @@
 import {configureStore} from "@reduxjs/toolkit";
 import quantityChangeReducer from "./quantityChangeSlice";
-import {cartApi, productsApi} from "../../../API";
+import {cartApi, productsApi} from "../API";
 
 export const store = configureStore({
     reducer: {

@@ -4,7 +4,7 @@ import ProductsInfo from "./products/productsInfo/ProductsInfo";
 import ProductsGrid from "./products/productsGrid/ProductsGrid";
 import {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
-import {productsApi, useGetProductsQuery} from "../API";
+import {useGetProductsQuery} from "../API";
 
 export default function Main({showNotification}) {
     if (localStorage.getItem('productsPerPage') === null) {
@@ -22,9 +22,7 @@ export default function Main({showNotification}) {
         data: products,
         isLoading,
         isFetching,
-        isError,
-        error,
-    } = useGetProductsQuery([productsPerPage, currentPage]);
+    } = useGetProductsQuery([productsPerPage, currentPage, addedFilters]);
 
     return (
         <main className="products-container">
