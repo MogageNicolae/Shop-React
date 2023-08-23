@@ -13,15 +13,18 @@ export default function CartPage() {
         isFetching,
         isError,
         error,
-    } = useGetCartQuery();
+    } = useGetCartQuery([JSON.parse(localStorage.getItem('user'))]);
 
     useEffect(() => {
-        if (cart) {
-            if (cart.totalQuantity === 0) {
-                setCartToShow(<EmptyCart/>);
-            } else {
-                setCartToShow(<ProductsCart cart={cart} setCartToShow={setCartToShow}/>);
-            }
+        if (cart === null || cart === undefined) {
+            setCartToShow(<EmptyCart/>);
+            // if (cart.quantity === 0) {
+            //     setCartToShow(<EmptyCart/>);
+            // } else {
+            //     setCartToShow(<ProductsCart cart={cart} setCartToShow={setCartToShow}/>);
+            // }
+        } else {
+            setCartToShow(<ProductsCart key="productCart" cart={cart} setCartToShow={setCartToShow}/>);
         }
     }, [cart]);
 

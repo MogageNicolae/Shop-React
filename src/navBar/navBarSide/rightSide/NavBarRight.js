@@ -1,7 +1,7 @@
 import SearchBar from "./searchBar/SearchBar";
 import Control from "./controls/Control";
 import {useEffect, useState} from "react";
-import {useGetCartQuery} from "../../../API";
+import {useGetCartSizeQuery} from "../../../API";
 
 export default function NavBarRight() {
     const size = useCartSize();
@@ -21,18 +21,15 @@ export default function NavBarRight() {
 function useCartSize() {
     const [cartSize, setCartSize] = useState(0);
     const {
-        data: cart,
-    } = useGetCartQuery();
+        data: cartSizeData,
+    } = useGetCartSizeQuery([JSON.parse(localStorage.getItem('user'))]);
 
     useEffect(() => {
-        if (cart) {
-            setCartSize(cart.totalQuantity);
-            if (cart.totalQuantity > 0) {
-                document.querySelector('.quantity-cart').classList.remove('quantity-empty');
-            }
+        setCartSize(cartSizeData);
+        if (cartSizeData > 0) {
+            document.querySelector('.quantity-cart').classList.remove('quantity-empty');
         }
-
-    }, [cart]);
+    }, [cartSizeData]);
 
     return cartSize;
 }

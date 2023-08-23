@@ -32,7 +32,7 @@ export default function Main({showNotification}) {
                 {
                     (isLoading || isFetching) ?
                         <div className="spinner center"></div> :
-                        <ProductsGrid gridProducts={products.products}
+                        <ProductsGrid gridProducts={products}
                                       numberOfPages={Math.ceil(numberOfProducts / productsPerPage)}
                                       currentPage={currentPage} showNotification={showNotification}/>
                 }

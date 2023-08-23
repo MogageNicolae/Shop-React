@@ -2,6 +2,7 @@ import Product from "../product/Product";
 import {Link} from "react-router-dom";
 
 export default function ProductsGrid({gridProducts, numberOfPages, currentPage, showNotification}) {
+    console.log(gridProducts);
     const products = gridProducts.map((product) => {
         createCssClass('id' + product.id, product.images[0]);
         return (<Product key={product.id} product={product} showNotification={showNotification}/>);

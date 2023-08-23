@@ -5,6 +5,11 @@ export default function Product({product, showNotification}) {
     const [addProductToCart] = useAddProductToCartMutation();
 
     async function handleAddProductToCart(event) {
+        if (localStorage.getItem('user') === null) {
+            window.location.href = "/login";
+            return;
+        }
+
         event.target.textContent = "Adding...";
         event.target.disabled = true;
         await updateCart(event.target.dataset.id, addProductToCart);
@@ -35,9 +40,9 @@ export default function Product({product, showNotification}) {
 
 async function updateCart(productId, addProductToCart) {
     try {
-        let product = await getProductAfterId(productId);
-        product.quantity = 1;
-        await addProductToCart(product).unwrap();
+        // let product = await getProductAfterId(productId);
+        // product.quantity = 1;
+        await addProductToCart([productId, JSON.parse(localStorage.getItem('user'))]).unwrap();
     } catch (e) {
         console.log(e);
     }

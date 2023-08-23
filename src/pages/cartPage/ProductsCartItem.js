@@ -7,9 +7,11 @@ import {
 } from "../../API";
 
 
-export default function ProductsCartItem({product, removeProduct}) {
+export default function ProductsCartItem({product, removeProduct, setTotalPrice}) {
     const quantity = useSelector((state) => state.quantityChange.value[product.id]);
     const [disabled, setDisabled] = useState(false);
+    const [discountedPrice, setDiscountedPrice] = useState(Math.floor(product.price * (1 - product.discountPercentage / 100)) * product.quantity);
+    const [price, setPrice] = useState(product.price * product.quantity);
     const [updateProductFromCart, {isLoading: isLoadingUpdate}] = useUpdateProductFromCartMutation();
     const [removeProductFromCart, {isLoading: isLoadingRemove}] = useRemoveProductFromCartMutation();
     const dispatch = useDispatch();
@@ -32,39 +34,23 @@ export default function ProductsCartItem({product, removeProduct}) {
                 </div>
                 <div className="checkout-item-info-quantity">
                     <div className="checkout-item-info-quantity-decrease"
-                         onClick={async () => {
-                             if(disabled) return;
-                             disableButtons();
-                             if (quantity === 1) {
-                                 await removeProductFromCart(product.id).unwrap();
-                                 removeProduct(product.id);
-                             } else {
-                                 await updateProductFromCart([product.id, -1]).unwrap();
-                                 dispatch(decrease({id: product.id}));
-                             }
-                             activateButtons();
-                         }}><span>-</span></div>
+                         onClick={decreaseQuantity}><span>-</span></div>
                     <div className="checkout-item-info-quantity-value"><span>{quantity}</span></div>
                     <div className="checkout-item-info-quantity-increase"
-                         onClick={async () => {
-                             if(disabled) return;
-                             disableButtons();
-                             await updateProductFromCart([product.id, 1]).unwrap();
-                             dispatch(increase({id: product.id}))
-                             activateButtons();
-                         }}><span>+</span></div>
+                         onClick={increaseQuantity}><span>+</span></div>
                 </div>
                 {(isLoadingUpdate || isLoadingRemove) && <div className="small-spinner spinner"></div>}
                 <div className="checkout-item-info-right-wrapper">
-                    <div className="checkout-item-info-price-discount">${Math.floor(product.discountedPrice)}</div>
+                    {/*<div className="checkout-item-info-price-discount">${Math.floor(product.price * (1 - product.discountPercentage / 100)) * product.quantity}</div>*/}
+                    <div className="checkout-item-info-price-discount">${Math.floor(discountedPrice)}</div>
                     <div className="checkout-item-info-price">
-                        <del>${product.price * product.quantity}</del>
+                        <del>${price}</del>
                     </div>
                     <div className="checkout-item-info-delete"
                          onClick={async () => {
-                             if(disabled) return;
+                             if (disabled) return;
                              disableButtons();
-                             await removeProductFromCart(product.id).unwrap();
+                             await removeProductFromCart([product.id, JSON.parse(localStorage.getItem('user'))]).unwrap();
                              removeProduct(product.id);
                              activateButtons();
                          }}><span className="material-symbols-outlined">delete</span>
@@ -73,6 +59,33 @@ export default function ProductsCartItem({product, removeProduct}) {
             </div>
         </div>
     );
+
+    async function decreaseQuantity() {
+        if (disabled) return;
+        disableButtons();
+        if (quantity === 1) {
+            await removeProductFromCart([product.id, JSON.parse(localStorage.getItem('user'))]).unwrap();
+            removeProduct(product.id);
+        } else {
+            await updateProductFromCart([product.id, quantity - 1, JSON.parse(localStorage.getItem('user'))]).unwrap();
+            dispatch(decrease({id: product.id}));
+        }
+        setDiscountedPrice(Math.floor(product.price * (1 - product.discountPercentage / 100)) * (quantity - 1));
+        setPrice(product.price * (quantity - 1));
+        setTotalPrice((prev) => prev - Math.floor(product.price * (1 - product.discountPercentage / 100)));
+        activateButtons();
+    }
+
+    async function increaseQuantity() {
+        if (disabled) return;
+        disableButtons();
+        await updateProductFromCart([product.id, quantity + 1, JSON.parse(localStorage.getItem('user'))]).unwrap();
+        dispatch(increase({id: product.id}))
+        setDiscountedPrice(Math.floor(product.price * (1 - product.discountPercentage / 100)) * (quantity + 1));
+        setPrice(product.price * (quantity + 1));
+        setTotalPrice((prev) => prev + Math.floor(product.price * (1 - product.discountPercentage / 100)));
+        activateButtons();
+    }
 
     function disableButtons() {
         setDisabled(true);

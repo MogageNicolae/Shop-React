@@ -8,8 +8,7 @@ export default function LoginForm() {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log("form submitted", email, password);
-        const response = await fetch("http://vlad-matei.thrive-dev.bitstoneint.com/wp-json/internship-api/v1/login", {
+        const response = await fetch("http://localhost:3124/login", {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
@@ -21,9 +20,11 @@ export default function LoginForm() {
             alert("User not found");
             return;
         }
-        await auth.login({email, password});
-        const json = await response.json();
-        localStorage.setItem('token', json.token);
+        response.json().then(data => {
+            auth.login(data.id);
+            localStorage.setItem('token', data.token);
+        });
+        // await auth.login({email, password});
     }
 
     return (
