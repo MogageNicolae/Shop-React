@@ -2,7 +2,7 @@ import NavBar from "../../navBar/NavBar";
 import {useAuth} from "../Authentification";
 import "./AccountPage.css";
 
-export default function AccountPage() {
+export default function AccountPage({cartSize}) {
     const auth = useAuth();
 
     const handleLogout = () => {
@@ -12,7 +12,7 @@ export default function AccountPage() {
 
     return (
         <div className="app">
-            <NavBar/>
+            <NavBar cartSize={cartSize}/>
             <div className="logout-button-wrapper">
                 <button className="logout-button" onClick={handleLogout}> Log out</button>
             </div>

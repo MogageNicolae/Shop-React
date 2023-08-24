@@ -4,7 +4,7 @@ import LoginForm from "./LoginForm";
 import {Navigate} from "react-router-dom";
 import {useAuth} from "../Authentification";
 
-export default function LoginPage() {
+export default function LoginPage({cartSize}) {
     const { user } = useAuth();
     if (user) {
         return <Navigate to="/account" />;
@@ -12,7 +12,7 @@ export default function LoginPage() {
 
     return (
         <div className="app">
-            <NavBar/>
+            <NavBar cartSize={cartSize}/>
             <LoginForm/>
             <footer></footer>
         </div>

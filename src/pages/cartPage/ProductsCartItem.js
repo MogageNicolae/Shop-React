@@ -5,6 +5,7 @@ import {
     useRemoveProductFromCartMutation,
     useUpdateProductFromCartMutation
 } from "../../API";
+import {updateQuantityInCart} from "../../main/products/product/Product";
 
 
 export default function ProductsCartItem({product, removeProduct, setTotalPrice}) {
@@ -50,8 +51,12 @@ export default function ProductsCartItem({product, removeProduct, setTotalPrice}
                          onClick={async () => {
                              if (disabled) return;
                              disableButtons();
-                             await removeProductFromCart([product.id, JSON.parse(localStorage.getItem('user'))]).unwrap();
-                             removeProduct(product.id);
+                             removeProductFromCart([product.id, JSON.parse(localStorage.getItem('user'))]).unwrap().then(
+                                 (cart) => {
+                                     removeProduct(cart.products);
+                                 });
+                             updateQuantityInCart(-quantity);
+                             setTotalPrice((prev) => prev - Math.floor(product.price * (1 - product.discountPercentage / 100)) * quantity);
                              activateButtons();
                          }}><span className="material-symbols-outlined">delete</span>
                     </div>
@@ -64,12 +69,15 @@ export default function ProductsCartItem({product, removeProduct, setTotalPrice}
         if (disabled) return;
         disableButtons();
         if (quantity === 1) {
-            await removeProductFromCart([product.id, JSON.parse(localStorage.getItem('user'))]).unwrap();
-            removeProduct(product.id);
+            removeProductFromCart([product.id, JSON.parse(localStorage.getItem('user'))]).unwrap().then(
+                (cart) => {
+                   removeProduct(cart.products);
+                });
         } else {
-            await updateProductFromCart([product.id, quantity - 1, JSON.parse(localStorage.getItem('user'))]).unwrap();
-            dispatch(decrease({id: product.id}));
+            updateProductFromCart([product.id, quantity - 1, JSON.parse(localStorage.getItem('user'))]).unwrap()
+                .then(dispatch(decrease({id: product.id})));
         }
+        updateQuantityInCart(-1);
         setDiscountedPrice(Math.floor(product.price * (1 - product.discountPercentage / 100)) * (quantity - 1));
         setPrice(product.price * (quantity - 1));
         setTotalPrice((prev) => prev - Math.floor(product.price * (1 - product.discountPercentage / 100)));
@@ -81,6 +89,7 @@ export default function ProductsCartItem({product, removeProduct, setTotalPrice}
         disableButtons();
         await updateProductFromCart([product.id, quantity + 1, JSON.parse(localStorage.getItem('user'))]).unwrap();
         dispatch(increase({id: product.id}))
+        updateQuantityInCart(1);
         setDiscountedPrice(Math.floor(product.price * (1 - product.discountPercentage / 100)) * (quantity + 1));
         setPrice(product.price * (quantity + 1));
         setTotalPrice((prev) => prev + Math.floor(product.price * (1 - product.discountPercentage / 100)));

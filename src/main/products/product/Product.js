@@ -1,11 +1,11 @@
 import {Link} from "react-router-dom";
-import {getProductAfterId, useAddProductToCartMutation} from "../../../API";
+import {useAddProductToCartMutation} from "../../../API";
 
 export default function Product({product, showNotification}) {
     const [addProductToCart] = useAddProductToCartMutation();
 
     async function handleAddProductToCart(event) {
-        if (localStorage.getItem('user') === null) {
+        if (JSON.parse(localStorage.getItem('user')) === null) {
             window.location.href = "/login";
             return;
         }
@@ -40,8 +40,6 @@ export default function Product({product, showNotification}) {
 
 async function updateCart(productId, addProductToCart) {
     try {
-        // let product = await getProductAfterId(productId);
-        // product.quantity = 1;
         await addProductToCart([productId, JSON.parse(localStorage.getItem('user'))]).unwrap();
     } catch (e) {
         console.log(e);

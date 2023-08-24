@@ -6,7 +6,7 @@ import "./ProductPage.css";
 let slideIndex;
 let prevIndex;
 
-export default function ProductPage() {
+export default function ProductPage({cartSize}) {
     const {productId} = useParams();
     const id = parseInt(productId);
     const {
@@ -17,9 +17,11 @@ export default function ProductPage() {
     slideIndex = 0;
     prevIndex = 0;
 
+    console.log(getProduct);
+
     return (
         <div className="app">
-            <NavBar/>
+            <NavBar cartSize={cartSize}/>
             <main className="product-container">
                 <section className="product-info">
                     {isLoading ? <div className="spinner center"></div> : <>

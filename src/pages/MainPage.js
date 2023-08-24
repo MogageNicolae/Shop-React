@@ -2,7 +2,7 @@ import NavBar from "../navBar/NavBar";
 import Main from "../main/Main";
 import {useState} from "react";
 
-export default function MainPage() {
+export default function MainPage({cartSize}) {
     const [notification, setNotification] = useState(null);
 
     function showNotification() {
@@ -15,7 +15,7 @@ export default function MainPage() {
     return (
         <div className="app">
             {notification}
-            <NavBar/>
+            <NavBar cartSize={cartSize}/>
             <Main showNotification={showNotification}/>
             <footer></footer>
         </div>

@@ -1,9 +1,9 @@
 import NavBar from "../navBar/NavBar";
 
-export default function LandingPage() {
+export default function LandingPage({cartSize}) {
     return (
         <div className="app">
-            <NavBar/>
+            <NavBar cartSize={cartSize}/>
             <footer></footer>
         </div>
     );

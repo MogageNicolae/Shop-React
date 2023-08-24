@@ -4,13 +4,13 @@ import NavBarRight from "./navBarSide/rightSide/NavBarRight";
 import {Link} from "react-router-dom";
 
 
-export default function NavBar() {
+export default function NavBar({cartSize}) {
     return (
         <nav className="nav-bar">
             <h1 className="shop-name"><Link to={"/"} className="link-react">Mogos-Hermanos</Link></h1>
             <div className="nav-bar-menu">
                 <NavBarLeft/>
-                <NavBarRight/>
+                <NavBarRight cartSize={cartSize}/>
             </div>
         </nav>
     );

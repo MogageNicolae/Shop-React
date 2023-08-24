@@ -1,11 +1,5 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
 
-export async function getProductAfterId(id) {
-    return await fetch('http://localhost:3124/products/' + id)
-        .then(res => res.json());
-}
-
-
 export const productsApi = createApi({
     reducerPath: 'productsApi',
     baseQuery: fetchBaseQuery({baseUrl: 'http://localhost:3124/'}),
@@ -13,10 +7,14 @@ export const productsApi = createApi({
         getProducts: builder.query({
             query: ([productsPerPage, currentPage, addedFilters]) => addedFilters.length === 0 ?
                 `products?noOfProducts=${productsPerPage}&page=${currentPage}` :
-                `products/categories?noOfProducts=${productsPerPage}&page=${currentPage}&categories=${addedFilters.join(',')}`,
+                `products/categories?noOfProducts=${productsPerPage}&page=${currentPage}&categories=${addedFilters.join(',').toLowerCase()}`,
         }),
         getProduct: builder.query({
             query: (id = 1) => `products/${id}`,
+        }),
+        getNoOfProducts: builder.query({
+            query: (addedFilters) =>
+            (addedFilters.length !== 0) ? `products/size?categories=${addedFilters.join(',').toLowerCase()}` : `products/size`,
         }),
     }),
 });
@@ -24,6 +22,7 @@ export const productsApi = createApi({
 export const {
     useGetProductsQuery,
     useGetProductQuery,
+    useGetNoOfProductsQuery
 } = productsApi;
 
 export const cartApi = createApi({

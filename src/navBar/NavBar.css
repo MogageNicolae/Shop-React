@@ -103,3 +103,21 @@
     justify-content: space-between;
     align-items: center;
 }
+
+.nav-bar-menu .search-button:hover {
+    cursor: pointer;
+}
+
+.nav-bar-menu .search-input {
+    width: 100%;
+    height: 30px;
+    text-align: right;
+    background: transparent;
+    border: 0;
+    padding: 0 5px;
+    font-size: 1rem;
+}
+
+.nav-bar-menu .search-input:focus {
+    outline: none;
+}

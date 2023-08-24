@@ -1,5 +1,5 @@
 import './App.css';
-import {BrowserRouter, Route, Routes} from "react-router-dom";
+import {Route, Routes} from "react-router-dom";
 import {AuthProvider, ProtectedRoute} from "./pages/Authentification";
 import MainPage from "./pages/MainPage";
 import LandingPage from "./pages/LandingPage";
@@ -7,28 +7,40 @@ import ProductPage from "./pages/productPage/ProductPage";
 import LoginPage from "./pages/loginPage/LoginPage";
 import CartPage from "./pages/cartPage/CartPage";
 import AccountPage from "./pages/accountPage/AccountPage";
-import {Provider} from "react-redux";
-import {store} from "./redux/store";
+import {useEffect, useState} from "react";
+import {useGetCartSizeQuery} from "./API";
 
 function App() {
+    const size = useCartSize();
+
     return (
-        <BrowserRouter>
-            <Provider store={store}>
-                <AuthProvider>
-                    <Routes>
-                        <Route path="/" element={<LandingPage/>}/>
-                        <Route path="/Shop-React" element={<LandingPage/>}/>
-                        <Route path="/products" element={<MainPage/>}/>
-                        <Route path="/products/:page" element={<MainPage/>}/>
-                        <Route path="/product-page/:productId" element={<ProductPage/>}/>
-                        <Route path="/login" element={<LoginPage/>}/>
-                        <Route path="/account" element={<ProtectedRoute><AccountPage/></ProtectedRoute>}/>
-                        <Route path="/cart" element={<ProtectedRoute><CartPage/></ProtectedRoute>}/>
-                    </Routes>
-                </AuthProvider>
-            </Provider>
-        </BrowserRouter>
+        <AuthProvider>
+            <Routes>
+                <Route path="/" element={<LandingPage cartSize={size}/>}/>
+                <Route path="/Shop-React" element={<LandingPage cartSize={size}/>}/>
+                <Route path="/products" element={<MainPage cartSize={size}/>}/>
+                <Route path="/products/:page" element={<MainPage cartSize={size}/>}/>
+                <Route path="/product-page/:productId" element={<ProductPage cartSize={size}/>}/>
+                <Route path="/login" element={<LoginPage cartSize={size}/>}/>
+                <Route path="/account" element={<ProtectedRoute><AccountPage cartSize={size}/></ProtectedRoute>}/>
+                <Route path="/cart" element={<ProtectedRoute><CartPage cartSize={size}/></ProtectedRoute>}/>
+            </Routes>
+        </AuthProvider>
     );
 }
 
+function useCartSize() {
+    const [cartSize, setCartSize] = useState(0);
+    const {
+        data: cartSizeData,
+    } = useGetCartSizeQuery([JSON.parse(localStorage.getItem('user'))], {skip: !JSON.parse(localStorage.getItem('user'))});
+
+    useEffect(() => {
+        setCartSize(cartSizeData === undefined ? 0 : cartSizeData);
+    }, [cartSizeData]);
+
+    return cartSize;
+}
+
 export default App;
+

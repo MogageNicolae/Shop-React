@@ -5,7 +5,7 @@ import {useEffect, useState} from "react";
 import ProductsCart from "./ProductsCart";
 import {useGetCartQuery} from "../../API";
 
-export default function CartPage() {
+export default function CartPage({cartSize}) {
     const [cartToShow, setCartToShow] = useState(null);
     const {
         data: cart,
@@ -16,13 +16,8 @@ export default function CartPage() {
     } = useGetCartQuery([JSON.parse(localStorage.getItem('user'))]);
 
     useEffect(() => {
-        if (cart === null || cart === undefined) {
+        if (cart === null || cart === undefined || cart.quantity === 0) {
             setCartToShow(<EmptyCart/>);
-            // if (cart.quantity === 0) {
-            //     setCartToShow(<EmptyCart/>);
-            // } else {
-            //     setCartToShow(<ProductsCart cart={cart} setCartToShow={setCartToShow}/>);
-            // }
         } else {
             setCartToShow(<ProductsCart key="productCart" cart={cart} setCartToShow={setCartToShow}/>);
         }
@@ -31,7 +26,7 @@ export default function CartPage() {
     if (isLoading || isFetching) {
         return (
             <div className="app">
-                <NavBar/>
+                <NavBar cartSize={cartSize}/>
                 <main className="checkout-container">
                     <div className="loader-container">
                         <div className="spinner"></div>
@@ -45,7 +40,7 @@ export default function CartPage() {
         console.log({error});
         return (
             <div className="app">
-                <NavBar/>
+                <NavBar cartSize={cartSize}/>
                 <main className="checkout-container">
                     error.status: {error.status}
                 </main>
@@ -56,7 +51,7 @@ export default function CartPage() {
 
     return (
         <div className="app">
-            <NavBar/>
+            <NavBar cartSize={cartSize}/>
             <main className="checkout-container">
                 {cartToShow}
             </main>

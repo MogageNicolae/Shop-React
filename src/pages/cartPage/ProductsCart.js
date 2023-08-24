@@ -1,7 +1,7 @@
 import {Link} from "react-router-dom";
 import ProductsCartItem from "./ProductsCartItem";
 import BoughtCart from "./BoughtCart";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import EmptyCart from "./EmptyCart";
 
 
@@ -12,10 +12,12 @@ export default function ProductsCart({cart, setCartToShow}) {
                                  setTotalPrice={setTotalPrice}/>;
     });
     const [checkoutProducts, setCheckoutProducts] = useState(products);
-    console.log(checkoutProducts);
 
-    function removeProductFromCart(productId) {
-        const newProducts = checkoutProducts.filter((product) => product.key !== productId.toString());
+    function removeProductFromCart(products) {
+        const newProducts = products.map((product) => {
+                return <ProductsCartItem key={product.id} product={product} removeProduct={removeProductFromCart}
+                                         setTotalPrice={setTotalPrice}/>;
+        });
         setCheckoutProducts(newProducts);
         if (newProducts.length === 0) {
             setCartToShow(<EmptyCart/>);
