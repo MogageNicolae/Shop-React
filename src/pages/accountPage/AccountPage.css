@@ -21,3 +21,55 @@
     cursor: pointer;
     transition: 0.3s;
 }
+
+.order-history-wrapper {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    max-width: 800px;
+    margin: 25px auto 0;
+}
+
+.order-history-title {
+    font-size: 24px;
+    font-weight: bold;
+    padding-bottom: 20px;
+    border-bottom: 1px solid black;
+}
+
+.order-history-item:first-child {
+    padding: 25px 0 10px;
+}
+
+.order-history-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 0;
+}
+
+.order-history-item-left {
+    display: flex;
+    flex-direction: column;
+}
+
+.order-history-item-left div{
+    padding: 1px 0;
+}
+
+.order-history-item-left div span:first-child{
+    display: inline-block;
+    width: 75px;
+}
+
+.order-history-item-right{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.order-history-item-right a{
+    font-weight: 500;
+    color: black;
+    border: 1px solid black;
+    padding: 10px 50px 10px;
+}

@@ -1,11 +1,9 @@
-import {Link} from "react-router-dom";
 import ProductsCartItem from "./ProductsCartItem";
-import BoughtCart from "./BoughtCart";
-import {useEffect, useState} from "react";
-import EmptyCart from "./EmptyCart";
+import {useState} from "react";
+import EmptyCart from "../EmptyCart";
 
 
-export default function ProductsCart({cart, setCartToShow}) {
+export default function ProductsCartStage({cart, setCartToShow}) {
     const [totalPrice, setTotalPrice] = useState(cart.discountTotal);
     const products = cart.products.map((product) => {
         return <ProductsCartItem key={product.id} product={product} removeProduct={removeProductFromCart}
@@ -24,10 +22,6 @@ export default function ProductsCart({cart, setCartToShow}) {
         }
     }
 
-    function handleBuy() {
-        setCartToShow(<BoughtCart/>)
-    }
-
     return (
         <section className="checkout">
             <div className="checkout-header">
@@ -44,8 +38,12 @@ export default function ProductsCart({cart, setCartToShow}) {
                 </div>
             </div>
             <div className="checkout-actions">
-                <Link to="/products" className="checkout-actions-back">Continue Shopping</Link>
-                <button type="button" className="checkout-actions-buy" onClick={handleBuy}>Buy items</button>
+                <a href="/products" className="checkout-actions-child checkout-actions-back">
+                    <span className="arrow-left material-symbols-outlined">arrow_back</span>
+                    <span>Continue Shopping</span></a>
+                <a href="/order/2" className="checkout-actions-child checkout-actions-next">
+                    <span>User Information</span>
+                    <span className="arrow-right material-symbols-outlined">arrow_forward</span></a>
             </div>
         </section>
     );

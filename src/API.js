@@ -5,16 +5,16 @@ export const productsApi = createApi({
     baseQuery: fetchBaseQuery({baseUrl: 'http://localhost:3124/'}),
     endpoints: (builder) => ({
         getProducts: builder.query({
-            query: ([productsPerPage, currentPage, addedFilters]) => addedFilters.length === 0 ?
-                `products?noOfProducts=${productsPerPage}&page=${currentPage}` :
-                `products/categories?noOfProducts=${productsPerPage}&page=${currentPage}&categories=${addedFilters.join(',').toLowerCase()}`,
+            query: ([productsPerPage, currentPage, addedFilters, searchText]) => addedFilters.length === 0 ?
+                `products?noOfProducts=${productsPerPage}&page=${currentPage}&search=${searchText}` :
+                `products/categories?noOfProducts=${productsPerPage}&page=${currentPage}&search=${searchText}&categories=${addedFilters.join(',').toLowerCase()}`,
         }),
         getProduct: builder.query({
             query: (id = 1) => `products/${id}`,
         }),
         getNoOfProducts: builder.query({
-            query: (addedFilters) =>
-            (addedFilters.length !== 0) ? `products/size?categories=${addedFilters.join(',').toLowerCase()}` : `products/size`,
+            query: ([addedFilters, searchText]) =>
+                (addedFilters.length !== 0) ? `products/size?search=${searchText}&categories=${addedFilters.join(',').toLowerCase()}` : `products/size?search=${searchText}`,
         }),
     }),
 });
@@ -105,3 +105,55 @@ export const {
     useUpdateProductFromCartMutation,
     useRemoveProductFromCartMutation
 } = cartApi;
+
+export const orderApi = createApi({
+    reducerPath: 'orderApi',
+    baseQuery: fetchBaseQuery({baseUrl: 'http://localhost:3124/order/'}),
+    endpoints: (builder) => ({
+        getOrders: builder.query({
+            query: ([user], token = localStorage.getItem('token')) => ({
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Auth': `${token}`
+                },
+                body: JSON.stringify({
+                    id: user
+                }),
+            }),
+        }),
+        getOrder: builder.query({
+            query: ([orderId, user], token = localStorage.getItem('token')) => ({
+                url: `${orderId}`,
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Auth': `${token}`
+                },
+                body: JSON.stringify({
+                    id: user
+                }),
+            }),
+        }),
+        createOrder: builder.mutation({
+            query: ([cart, user], token = localStorage.getItem('token')) => ({
+                url: "add",
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Auth': `${token}`
+                },
+                body: JSON.stringify({
+                    id: cart,
+                    userId: user
+                }),
+            }),
+        }),
+    }),
+});
+
+export const {
+    useCreateOrderMutation,
+    useGetOrderQuery,
+    useGetOrdersQuery
+} = orderApi;

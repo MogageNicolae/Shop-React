@@ -1,11 +1,11 @@
 import {useDispatch, useSelector} from "react-redux";
-import {decrease, increase, setNewValue} from "../../redux/quantityChangeSlice";
+import {decrease, increase, setNewValue} from "../../../redux/quantityChangeSlice";
 import {useEffect, useState} from "react";
 import {
     useRemoveProductFromCartMutation,
     useUpdateProductFromCartMutation
-} from "../../API";
-import {updateQuantityInCart} from "../../main/products/product/Product";
+} from "../../../API";
+import {updateQuantityInCart} from "../../../main/products/product/Product";
 
 
 export default function ProductsCartItem({product, removeProduct, setTotalPrice}) {

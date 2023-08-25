@@ -104,7 +104,7 @@
     align-items: center;
 }
 
-.nav-bar-menu .search-button:hover {
+.active:hover {
     cursor: pointer;
 }
 

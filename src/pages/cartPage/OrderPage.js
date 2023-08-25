@@ -1,25 +1,33 @@
 import NavBar from "../../navBar/NavBar";
 import EmptyCart from "./EmptyCart";
-import './CartPage.css';
+import './OrderPage.css';
 import {useEffect, useState} from "react";
-import ProductsCart from "./ProductsCart";
+import ProductsCartStage from "./ProductsCartStage/ProductsCartStage";
 import {useGetCartQuery} from "../../API";
+import {useParams} from "react-router-dom";
+import UserInformationStage from "./UserInformationStage/UserInformationStage";
 
-export default function CartPage({cartSize}) {
-    const [cartToShow, setCartToShow] = useState(null);
-    const {
-        data: cart,
-        isLoading,
-        isFetching,
-        isError,
-        error,
-    } = useGetCartQuery([JSON.parse(localStorage.getItem('user'))]);
+export default function OrderPage({cartSize}) {
+    let {stage} = useParams();
+    const [cartToShow, setCartToShow] = useState(null),
+        stageParam = parseInt(stage),
+        isStage = (!isNaN(stageParam) && stageParam >= 1 && stageParam <= 2),
+        currentStage = isStage ? stageParam : 1,
+        {
+            data: cart,
+            isLoading,
+            isFetching,
+            isError,
+            error,
+        } = useGetCartQuery([JSON.parse(localStorage.getItem('user'))]);
 
     useEffect(() => {
         if (cart === null || cart === undefined || cart.quantity === 0) {
             setCartToShow(<EmptyCart/>);
+        } else if (currentStage === 1){
+            setCartToShow(<ProductsCartStage key="productCart" cart={cart} setCartToShow={setCartToShow}/>);
         } else {
-            setCartToShow(<ProductsCart key="productCart" cart={cart} setCartToShow={setCartToShow}/>);
+            setCartToShow(<UserInformationStage key="userInformationPage" totalPrice={cart.discountTotal} setCartToShow={setCartToShow}/>);
         }
     }, [cart]);
 
@@ -27,7 +35,7 @@ export default function CartPage({cartSize}) {
         return (
             <div className="app">
                 <NavBar cartSize={cartSize}/>
-                <main className="checkout-container">
+                <main className="main-container">
                     <div className="loader-container">
                         <div className="spinner"></div>
                     </div>
@@ -41,7 +49,7 @@ export default function CartPage({cartSize}) {
         return (
             <div className="app">
                 <NavBar cartSize={cartSize}/>
-                <main className="checkout-container">
+                <main className="main-container">
                     error.status: {error.status}
                 </main>
                 <footer></footer>
@@ -52,7 +60,7 @@ export default function CartPage({cartSize}) {
     return (
         <div className="app">
             <NavBar cartSize={cartSize}/>
-            <main className="checkout-container">
+            <main className="main-container">
                 {cartToShow}
             </main>
             <footer></footer>

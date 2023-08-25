@@ -1,0 +1,38 @@
+.checkout-form {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px 25px;
+}
+
+.checkout-form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.checkout-form-group label {
+    color: #666;
+    font-size: 1.2rem;
+    padding-bottom: 5px;
+}
+
+.checkout-form-group input {
+    height: 150%;
+    padding: 10px 50px 10px 15px;
+    font-size: 1.2rem;
+    border: 1px solid #888;
+}
+
+.checkout-form-group input:focus {
+    outline: 0;
+    border: 1px solid black;
+}
+
+.checkout-notice {
+    padding-top: 15px;
+    font-size: 0.9rem;
+}
+
+.button-place-order {
+    font-weight: lighter;
+    line-height: 1.4em;
+}

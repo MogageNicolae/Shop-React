@@ -8,23 +8,23 @@ export default function LoginForm() {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        const response = await fetch("http://localhost:3124/login", {
+        fetch("http://localhost:3124/login", {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
                 email: email,
                 password: password
             })
+        }).then(response => {
+            if (response.status === 404) {
+                alert("User not found");
+                return;
+            }
+            response.json().then(data => {
+                auth.login(data.id);
+                localStorage.setItem('token', data.token);
+            });
         });
-        if (response.status === 404) {
-            alert("User not found");
-            return;
-        }
-        response.json().then(data => {
-            auth.login(data.id);
-            localStorage.setItem('token', data.token);
-        });
-        // await auth.login({email, password});
     }
 
     return (

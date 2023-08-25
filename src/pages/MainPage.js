@@ -3,7 +3,8 @@ import Main from "../main/Main";
 import {useState} from "react";
 
 export default function MainPage({cartSize}) {
-    const [notification, setNotification] = useState(null);
+    const [notification, setNotification] = useState(null),
+        [searchText, setSearchText] = useState('');
 
     function showNotification() {
         setNotification(<Notification/>);
@@ -15,8 +16,8 @@ export default function MainPage({cartSize}) {
     return (
         <div className="app">
             {notification}
-            <NavBar cartSize={cartSize}/>
-            <Main showNotification={showNotification}/>
+            <NavBar cartSize={cartSize} setSearchText={setSearchText}/>
+            <Main showNotification={showNotification} searchText={searchText}/>
             <footer></footer>
         </div>
     );

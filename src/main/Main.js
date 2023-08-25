@@ -2,11 +2,11 @@ import "./Main.css";
 import Filters from "./filters/Filters";
 import ProductsInfo from "./products/productsInfo/ProductsInfo";
 import ProductsGrid from "./products/productsGrid/ProductsGrid";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {useParams} from "react-router-dom";
 import {useGetNoOfProductsQuery, useGetProductsQuery} from "../API";
 
-export default function Main({showNotification}) {
+export default function Main({showNotification, searchText}) {
     if (localStorage.getItem('productsPerPage') === null) {
         localStorage.setItem('productsPerPage', '12');
     }
@@ -18,12 +18,12 @@ export default function Main({showNotification}) {
         currentPage = isPage ? pageParam : 1,
         {
             data: numberOfProducts,
-        } = useGetNoOfProductsQuery(addedFilters),
+        } = useGetNoOfProductsQuery([addedFilters, searchText]),
         {
             data: products,
             isLoading,
             isFetching,
-        } = useGetProductsQuery([productsPerPage, currentPage, addedFilters]);
+        } = useGetProductsQuery([productsPerPage, currentPage, addedFilters, searchText]);
 
     return (
         <main className="products-container">

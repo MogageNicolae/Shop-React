@@ -1,4 +1,4 @@
-.checkout-container {
+.main-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -18,7 +18,7 @@
 .checkout {
     display: flex;
     flex-direction: column;
-    font-size: clamp(1rem, 1.3vw, 2rem);
+    font-size: 1.5rem;
 }
 
 .checkout-body-grid {
@@ -74,7 +74,7 @@
     text-overflow: ellipsis;
     overflow-y: hidden;
     white-space: break-spaces;
-    font-size: clamp(1rem, 1vw, 2rem);
+    font-size: 0.8rem;
 }
 
 .checkout-item-info-price-discount {
@@ -126,9 +126,6 @@
     min-width: 90px;
 }
 
-/*.checkout-item-info-right-wrapper .material-symbols-outlined {*/
-/*    color: black;*/
-/*}*/
 
 .checkout-item-info-right-wrapper .material-symbols-outlined:hover {
     color: red;
@@ -174,15 +171,33 @@
     justify-content: space-between;
     align-items: center;
     margin-top: 3%;
+
+}
+
+.checkout-actions-child {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    border: none;
+    padding: 1% 5%;
+    border-radius: 5px;
+    margin: 0;
+    text-transform: uppercase;
+    font-size: clamp(1rem, 1.1vw, 2rem);
+}
+
+.checkout-actions-child .arrow-right {
+    padding-left: 10px;
+}
+
+.checkout-actions-child .arrow-left {
+    padding-right: 5px;
 }
 
 .checkout-actions-back {
     background-color: #f0f0f0;
     color: #000;
-    border: none;
-    padding: 1% 5%;
-    border-radius: 5px;
-    margin: 0;
 }
 
 .checkout-actions-back:hover {
@@ -190,17 +205,12 @@
     color: #f0f0f0;
 }
 
-.checkout-actions-buy {
+.checkout-actions-next {
     background-color: #000;
     color: #f0f0f0;
-    border: none;
-    padding: 1% 5%;
-    border-radius: 5px;
-    margin: 0;
-    font-size: clamp(1rem, 1.3vw, 2rem);
 }
 
-.checkout-actions-buy:hover {
+.checkout-actions-next:hover {
     background-color: #f0f0f0;
     color: #000;
     cursor: pointer;

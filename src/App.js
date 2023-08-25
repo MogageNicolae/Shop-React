@@ -5,10 +5,12 @@ import MainPage from "./pages/MainPage";
 import LandingPage from "./pages/LandingPage";
 import ProductPage from "./pages/productPage/ProductPage";
 import LoginPage from "./pages/loginPage/LoginPage";
-import CartPage from "./pages/cartPage/CartPage";
+import OrderPage from "./pages/cartPage/OrderPage";
 import AccountPage from "./pages/accountPage/AccountPage";
 import {useEffect, useState} from "react";
 import {useGetCartSizeQuery} from "./API";
+import PageNotFound from "./pages/PageNotFound";
+import OrderHistoryPage from "./pages/accountPage/OrderHistoryPage";
 
 function App() {
     const size = useCartSize();
@@ -23,7 +25,9 @@ function App() {
                 <Route path="/product-page/:productId" element={<ProductPage cartSize={size}/>}/>
                 <Route path="/login" element={<LoginPage cartSize={size}/>}/>
                 <Route path="/account" element={<ProtectedRoute><AccountPage cartSize={size}/></ProtectedRoute>}/>
-                <Route path="/cart" element={<ProtectedRoute><CartPage cartSize={size}/></ProtectedRoute>}/>
+                <Route path="/account/order/:id" element={<ProtectedRoute><OrderHistoryPage cartSize={size}/></ProtectedRoute>}/>
+                <Route path="/order/:stage" element={<ProtectedRoute><OrderPage cartSize={size}/></ProtectedRoute>}/>
+                <Route path="*" element={<PageNotFound cartSize={size}/>} />
             </Routes>
         </AuthProvider>
     );
