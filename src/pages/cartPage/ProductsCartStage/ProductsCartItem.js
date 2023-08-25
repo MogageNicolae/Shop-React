@@ -42,7 +42,6 @@ export default function ProductsCartItem({product, removeProduct, setTotalPrice}
                 </div>
                 {(isLoadingUpdate || isLoadingRemove) && <div className="small-spinner spinner"></div>}
                 <div className="checkout-item-info-right-wrapper">
-                    {/*<div className="checkout-item-info-price-discount">${Math.floor(product.price * (1 - product.discountPercentage / 100)) * product.quantity}</div>*/}
                     <div className="checkout-item-info-price-discount">${Math.floor(discountedPrice)}</div>
                     <div className="checkout-item-info-price">
                         <del>${price}</del>

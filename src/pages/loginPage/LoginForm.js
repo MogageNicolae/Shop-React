@@ -1,7 +1,7 @@
 import {useState} from "react";
 import {useAuth} from "../Authentification";
 
-export default function LoginForm() {
+export default function LoginForm({setCartSize}) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const auth = useAuth();
@@ -21,6 +21,7 @@ export default function LoginForm() {
                 return;
             }
             response.json().then(data => {
+                setCartSize(1);
                 auth.login(data.id);
                 localStorage.setItem('token', data.token);
             });

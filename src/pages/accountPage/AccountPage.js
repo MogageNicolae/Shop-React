@@ -4,7 +4,7 @@ import "./AccountPage.css";
 import {orderApi, useGetOrdersQuery} from "../../API";
 import OrderHistoryItem from "./OrderHistoryItem";
 
-export default function AccountPage({cartSize}) {
+export default function AccountPage({cartSize, setCartSize}) {
     const auth = useAuth(),
         {
             data: orders,
@@ -25,6 +25,7 @@ export default function AccountPage({cartSize}) {
                 alert("Error logging out");
                 return;
             }
+            setCartSize(0);
             localStorage.removeItem("token");
             auth.logout();
         });

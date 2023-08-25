@@ -13,8 +13,7 @@ import PageNotFound from "./pages/PageNotFound";
 import OrderHistoryPage from "./pages/accountPage/OrderHistoryPage";
 
 function App() {
-    const size = useCartSize();
-
+    const [size, setSize] = useCartSize();
     return (
         <AuthProvider>
             <Routes>
@@ -23,11 +22,12 @@ function App() {
                 <Route path="/products" element={<MainPage cartSize={size}/>}/>
                 <Route path="/products/:page" element={<MainPage cartSize={size}/>}/>
                 <Route path="/product-page/:productId" element={<ProductPage cartSize={size}/>}/>
-                <Route path="/login" element={<LoginPage cartSize={size}/>}/>
-                <Route path="/account" element={<ProtectedRoute><AccountPage cartSize={size}/></ProtectedRoute>}/>
-                <Route path="/account/order/:id" element={<ProtectedRoute><OrderHistoryPage cartSize={size}/></ProtectedRoute>}/>
+                <Route path="/login" element={<LoginPage cartSize={size} setCartSize={setSize}/>}/>
+                <Route path="/account" element={<ProtectedRoute><AccountPage cartSize={size} setCartSize={setSize}/></ProtectedRoute>}/>
+                <Route path="/account/order/:id"
+                       element={<ProtectedRoute><OrderHistoryPage cartSize={size}/></ProtectedRoute>}/>
                 <Route path="/order/:stage" element={<ProtectedRoute><OrderPage cartSize={size}/></ProtectedRoute>}/>
-                <Route path="*" element={<PageNotFound cartSize={size}/>} />
+                <Route path="*" element={<PageNotFound cartSize={size}/>}/>
             </Routes>
         </AuthProvider>
     );
@@ -43,7 +43,7 @@ function useCartSize() {
         setCartSize(cartSizeData === undefined ? 0 : cartSizeData);
     }, [cartSizeData]);
 
-    return cartSize;
+    return [cartSize, setCartSize];
 }
 
 export default App;
