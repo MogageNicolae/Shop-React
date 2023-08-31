@@ -2,7 +2,7 @@ import './App.css';
 import {Route, Routes} from "react-router-dom";
 import {AuthProvider, ProtectedRoute} from "./pages/Authentification";
 import MainPage from "./pages/MainPage";
-import LandingPage from "./pages/LandingPage";
+import LandingPage from "./pages/LandingPage/LandingPage";
 import ProductPage from "./pages/productPage/ProductPage";
 import LoginPage from "./pages/loginPage/LoginPage";
 import OrderPage from "./pages/cartPage/OrderPage";

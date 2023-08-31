@@ -1,6 +1,7 @@
 import './UserInformationStage.css';
 import {useState} from "react";
 import BoughtCart from "../../BoughtCart";
+import {useCreateOrderMutation} from "../../../API";
 
 export default function UserInformationStage({totalPrice, setCartToShow}) {
     const [notification, setNotification] = useState(null),
@@ -8,6 +9,7 @@ export default function UserInformationStage({totalPrice, setCartToShow}) {
         [city, setCity] = useState(''),
         [address, setAddress] = useState(''),
         [phone, setPhone] = useState(''),
+        [createOrder] = useCreateOrderMutation(),
         placeOrder = async (event) => {
             event.preventDefault();
 
@@ -25,20 +27,12 @@ export default function UserInformationStage({totalPrice, setCartToShow}) {
                 return;
             }
 
-            fetch("http://localhost:3124/order/add", {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Auth': localStorage.getItem("token"),
-                },
-                body: JSON.stringify({
-                    id: JSON.parse(localStorage.getItem('user')),
-                    country,
-                    city,
-                    address,
-                    phone,
-                })
-            }).then(() => {
+            createOrder([JSON.parse(localStorage.getItem('user')), {
+                country,
+                city,
+                address,
+                phone,
+            }]).unwrap().then(() => {
                 setCartToShow(<BoughtCart/>);
                 document.querySelector('.quantity-cart').classList.add('quantity-empty');
             });

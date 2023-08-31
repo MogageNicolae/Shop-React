@@ -5,6 +5,15 @@
     position: relative;
 }
 
+hr {
+    border: 0;
+    clear:both;
+    display:block;
+    width: 101%;
+    background-color:#222;
+    height: 1px;
+}
+
 footer {
     margin-top: 50px;
 }

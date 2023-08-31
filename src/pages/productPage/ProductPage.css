@@ -150,7 +150,7 @@
     margin-left: 25px;
     display: flex;
     flex-direction: column;
-    width: 30vw;
+    width: 28vw;
 }
 
 .product-container .product-info .product-details div {
@@ -161,4 +161,52 @@
     font-size: clamp(1.5rem, 2.5vw, 3.5rem);
     font-weight: 600;
     margin-bottom: 10px;
+}
+
+.product-container .product-info .product-details .product-price {
+    font-size: clamp(1.5rem, 2.5vw, 3.5rem);
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.product-container .product-info .product-details .product-description {
+    font-size: clamp(1rem, 2vw, 2rem);
+    font-weight: 400;
+    margin-bottom: 10px;
+}
+
+.product-container .product-info .product-details .product-actions {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 2vw;
+}
+
+.product-container .product-info .product-details .product-actions .quantity {
+
+}
+
+.product-container .product-info .product-details .product-actions .quantity-input {
+    font-size: 1.7vw;
+}
+
+.product-container .product-info .product-details .product-actions .product-add-to-cart {
+    font-size: 1.7vw;
+}
+
+.product-container .product-info .product-details .product-actions .product-add-to-cart:hover {
+    background-color: #000;
+    color: #f0f0f0;
+}
+
+.product-container .product-info .product-details .product-actions .product-add-to-favorite {
+    font-size: 1.7vw;
+    width: 50px;
+}
+
+.product-container .product-info .product-details .product-actions .product-add-to-favorite:hover {
+    background-color: #000;
+    color: #f0f0f0;
 }

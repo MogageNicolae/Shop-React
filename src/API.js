@@ -136,7 +136,7 @@ export const orderApi = createApi({
             }),
         }),
         createOrder: builder.mutation({
-            query: ([cart, user], token = localStorage.getItem('token')) => ({
+            query: ([userId, orderData], token = localStorage.getItem('token')) => ({
                 url: "add",
                 method: 'POST',
                 headers: {
@@ -144,8 +144,11 @@ export const orderApi = createApi({
                     'Auth': `${token}`
                 },
                 body: JSON.stringify({
-                    id: cart,
-                    userId: user
+                    id: userId,
+                    country: orderData.country,
+                    city: orderData.city,
+                    address: orderData.address,
+                    phone: orderData.phone,
                 }),
             }),
         }),
@@ -157,3 +160,49 @@ export const {
     useGetOrderQuery,
     useGetOrdersQuery
 } = orderApi;
+
+export const reviewsApi = createApi({
+    reducerPath: 'reviewApi',
+    baseQuery: fetchBaseQuery({baseUrl: 'http://localhost:3124/reviews/'}),
+    endpoints: (builder) => ({
+        getReviewsByProduct: builder.query({
+            query: ([productId]) => `product/${productId}`,
+        }),
+        getReviewsByUser: builder.query({
+            query: ([userId]) => `user/${userId}`,
+        }),
+        addReview: builder.mutation({
+            query: ([userId, productId, reviewData], token = localStorage.getItem('token')) => ({
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Auth': `${token}`
+                },
+                body: JSON.stringify({
+                    userId: userId,
+                    productId: productId,
+                    rating: reviewData.rating,
+                    title: reviewData.title,
+                    description: reviewData.content,
+                }),
+            }),
+        }),
+        deleteReview: builder.mutation({
+            query: ([reviewId], token = localStorage.getItem('token')) => ({
+                url: `${reviewId}`,
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Auth': `${token}`
+                },
+            }),
+        }),
+    }),
+});
+
+export const {
+    useGetReviewsByProductQuery,
+    useGetReviewsByUserQuery,
+    useAddReviewMutation,
+    useDeleteReviewMutation
+} = reviewsApi;

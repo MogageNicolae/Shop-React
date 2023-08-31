@@ -1,6 +1,6 @@
 import {configureStore} from "@reduxjs/toolkit";
 import quantityChangeReducer from "./quantityChangeSlice";
-import {cartApi, orderApi, productsApi} from "../API";
+import {cartApi, orderApi, productsApi, reviewsApi} from "../API";
 
 export const store = configureStore({
     reducer: {
@@ -8,8 +8,12 @@ export const store = configureStore({
         [cartApi.reducerPath]: cartApi.reducer,
         [productsApi.reducerPath]: productsApi.reducer,
         [orderApi.reducerPath]: orderApi.reducer,
+        [reviewsApi.reducerPath]: reviewsApi.reducer,
     },
     middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware().concat(cartApi.middleware, productsApi.middleware, orderApi.middleware),
-
+        getDefaultMiddleware().concat(
+            cartApi.middleware,
+            productsApi.middleware,
+            orderApi.middleware,
+            reviewsApi.middleware),
 })
